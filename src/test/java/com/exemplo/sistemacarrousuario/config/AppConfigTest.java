@@ -1,4 +1,4 @@
-package com.exemplo.sistemacarrousuario;
+package com.exemplo.sistemacarrousuario.config;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
