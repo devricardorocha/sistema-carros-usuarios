@@ -20,6 +20,10 @@ public class HttpRequestValidator<T> {
 		this.factory = Validation.buildDefaultValidatorFactory();
 	}
 
+	public HttpRequestValidator(ValidatorFactory factory) {
+		this.factory = factory;
+	}
+	
 	private Validator getValidator() {
 		return factory.getValidator();
 	}
