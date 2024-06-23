@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.exemplo.sistemacarrousuario.config.AppConfig;
-import com.exemplo.sistemacarrousuario.domain.dto.UserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 
 @SpringBootTest
@@ -42,7 +42,7 @@ public class UserRestControllerTest {
 
 	@Test
 	void shouldFetchAllUsers() throws Exception {
-		doReturn(List.of(mock(UserDTO.class))).when(userService).getAll();
+		doReturn(List.of(mock(CreateUserDTO.class))).when(userService).getAll();
 		this.mockMvc.perform(get(USERS_PATH)).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").exists());
 	}
 }
