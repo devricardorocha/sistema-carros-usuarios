@@ -31,7 +31,7 @@ public class UserRestController {
 	private UserService userService;
 	
 	@Autowired
-	private HttpRequestValidator<CreateUserDTO> userValidator;
+	private HttpRequestValidator<CreateUserDTO> createUserValidator;
 
 	@GetMapping
 	@Operation(summary = "Listar usuários")
@@ -48,7 +48,7 @@ public class UserRestController {
 			@ApiResponse(responseCode = "400", description = "Request inválido"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<CreateUserDTO> createUser(@Valid @RequestBody CreateUserDTO body) {
-		userValidator.validate(body);
+		createUserValidator.validate(body);
 		return new ResponseEntity<CreateUserDTO>(userService.createUser(body), HttpStatus.OK);
 	}
 }

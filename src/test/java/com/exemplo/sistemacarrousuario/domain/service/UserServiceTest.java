@@ -23,6 +23,7 @@ import org.modelmapper.ModelMapper;
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
+import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.repository.UserRepository;
 import com.exemplo.sistemacarrousuario.domain.service.impl.UserServiceImpl;
 
@@ -37,7 +38,7 @@ public class UserServiceTest {
 
 	@Mock
 	private ModelMapper modelMapper;
-
+	
 	@Test
 	void shouldFetchAllUsers() {
 		when(userRepository.findAll()).thenReturn(List.of(mock(User.class)));
@@ -49,17 +50,10 @@ public class UserServiceTest {
 	@Nested
 	class CreateUserTest {
 		
-		private User getUser() {
-			return User.builder()
-					.email("alice.silva@example.com")
-					.login("alice_silva")
-					.id(0).build();
-		}
-		
 		@Test
 		void shouldCreateUser() {
 			
-			User userDTO = getUser();
+			User userDTO = UserMockTest.userA;
 			
 			when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 			when(userRepository.existsByLogin(any())).thenReturn(Boolean.FALSE);

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.exemplo.sistemacarrousuario.config.AppConfig;
-
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = AppConfig.class)
 public class AppConfigTest {

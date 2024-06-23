@@ -1,30 +1,35 @@
 package com.exemplo.sistemacarrousuario.api.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
 
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.exemplo.sistemacarrousuario.config.AppConfig;
+import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
+import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
+import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Import(AppConfig.class)
+@WebMvcTest(UserRestController.class)
+@AutoConfigureMockMvc(addFilters = false)
 public class UserRestControllerTest {
 
 	private static final String USERS_PATH = "/users";
@@ -35,14 +40,39 @@ public class UserRestControllerTest {
 	@MockBean
 	private UserService userService;
 
+	@MockBean
+	private JwtTokenUtils jwtTokenUtils;
+
+	@MockBean
+	private HttpRequestValidator<CreateUserDTO> createUserValidator;
+
 	@BeforeEach
-	public void init() {
-		MockitoAnnotations.openMocks(this);
+	@SuppressWarnings("deprecation")
+	public void beforeEach() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
 	void shouldFetchAllUsers() throws Exception {
-		doReturn(List.of(mock(CreateUserDTO.class))).when(userService).getAll();
-		this.mockMvc.perform(get(USERS_PATH)).andExpect(status().isOk()).andExpect(jsonPath("$[0].id").exists());
+		doReturn(List.of(UserMockTest.userA)).when(userService).getAll();
+		this.mockMvc.perform(get(USERS_PATH).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].id").exists())
+				.andExpect(jsonPath("$[0].id", Is.is(UserMockTest.userA.getId())));
+	}
+
+	@Nested
+	class CreateUserTest {
+
+		@Test
+		void shouldCreateUser() throws Exception {
+			doReturn(UserMockTest.createdUserA)
+				.when(userService).createUser(any(CreateUserDTO.class));
+
+			String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
+
+			mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
+					.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+		}
+
 	}
 }
