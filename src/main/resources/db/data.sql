@@ -10,7 +10,7 @@ CREATE TABLE users (
     login VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL,
-	creation DATE NOT NULL,
+	created DATE NOT NULL,
 	lastLogin DATETIME,
     CONSTRAINT unique_login UNIQUE (login),
     CONSTRAINT unique_email UNIQUE (email)
@@ -27,7 +27,7 @@ CREATE TABLE cars (
     FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
-INSERT INTO users (firstName, lastName, email, birthday, login, password, phone, creation, lastLogin) VALUES
+INSERT INTO users (firstName, lastName, email, birthday, login, password, phone, created, lastLogin) VALUES
 ('Alice', 'Silva', 'alice.silva@example.com', '1990-01-15', 'alice_silva', 'senha123', '81123456789', CURRENT_DATE, CURRENT_TIMESTAMP),
 ('Bruno', 'Costa', 'bruno.costa@example.com', '1985-05-23', 'bruno_costa', 'senha123', '81987654321', CURRENT_DATE, CURRENT_TIMESTAMP),
 ('Carla', 'Souza', 'carla.souza@example.com', '1992-09-30', 'carla_souza', 'senha123', '81456789123', CURRENT_DATE, CURRENT_TIMESTAMP);
