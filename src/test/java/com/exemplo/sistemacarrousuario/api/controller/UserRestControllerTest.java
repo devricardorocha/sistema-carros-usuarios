@@ -99,7 +99,6 @@ public class UserRestControllerTest {
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
 	}
 	
-	
 	@Test
 	void shouldDeleteUser() throws Exception {
 		doNothing().when(userService).deleteUserByID(anyInt());

@@ -145,6 +145,20 @@ public class UserRestController {
 		return new ResponseEntity<UpdateUserDTO>(userService.updateUser(id, body), HttpStatus.OK);
 	}
 	
+	/**
+	 * Endpoint para deletar um usuário existente pelo ID.
+	 *
+	 * <p>Este método lida com solicitações HTTP DELETE no caminho "/users/{id}".</p>
+	 *
+	 * @param id o ID do usuário a ser deletado
+	 * @return ResponseEntity com o status HTTP 204 (No Content)
+	 *
+	 * <ul>
+	 *   <li>{@code 204}: Usuário removido com sucesso</li>
+	 *   <li>{@code 404}: Usuário não encontrado</li>
+	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
+	 * </ul>
+	 */
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Remover usuário")
 	@ApiResponses(value = {

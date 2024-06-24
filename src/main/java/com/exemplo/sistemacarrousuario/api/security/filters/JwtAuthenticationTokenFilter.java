@@ -36,33 +36,33 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String token = request.getHeader(AUTH_HEADER);
-		if (Objects.nonNull(token) && token.startsWith(BEARER_PREFIX)) {
-			token = token.substring(7);
-		}
+		String authHeader = request.getHeader(AUTH_HEADER);
 
-		String login = jwtTokenUtils.getLoginFromToken(token);
-		if (Objects.nonNull(login) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
-			try {
-				UserDetails details = userDetailsService.loadUserByUsername(login);
+		String token = null;
+		String login = null;
+		if (Objects.nonNull(authHeader) && authHeader.startsWith(BEARER_PREFIX)) {
+			token = authHeader.substring(7);
+			login = jwtTokenUtils.getLoginFromToken(token);
+			
+			if (Objects.nonNull(login) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+				try {
+					UserDetails details = userDetailsService.loadUserByUsername(login);
 
-				if (jwtTokenUtils.isTokenValid(token)) {
-					UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(details,
-							null, details.getAuthorities());
-					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					if (jwtTokenUtils.isTokenValid(token)) {
+						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(details,
+								null, details.getAuthorities());
+						authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-					SecurityContextHolder.getContext().setAuthentication(authentication);
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					}
+				} catch (ResourceNotFoundException e) {
+					throw new ResourceNotFoundException("Invalid login or password");
 				}
-			} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException("Invalid login or password");
 			}
+			
 		}
 
-		try {
-			filterChain.doFilter(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		filterChain.doFilter(request, response);
 	}
 
 }
