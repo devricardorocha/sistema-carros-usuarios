@@ -30,9 +30,6 @@ import lombok.Setter;
 @Builder
 public class User implements UserDetails {
 
-	/**
-	 * User serial
-	 */
 	private static final long serialVersionUID = -7599246158852875635L;
 
 	@Id

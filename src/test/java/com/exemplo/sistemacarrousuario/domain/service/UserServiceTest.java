@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,7 @@ import org.modelmapper.ModelMapper;
 
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.repository.UserRepository;
@@ -42,8 +44,8 @@ public class UserServiceTest {
 	@Test
 	void shouldFetchAllUsers() {
 		when(userRepository.findAll()).thenReturn(List.of(mock(User.class)));
-		when(modelMapper.map(any(User.class), eq(CreateUserDTO.class))).thenReturn(mock(CreateUserDTO.class));
-		List<CreateUserDTO> users = userService.getAll();
+		when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(mock(GetUserDTO.class));
+		List<GetUserDTO> users = userService.getAll();
 		assertFalse(users.isEmpty());
 	}
 	
@@ -80,6 +82,27 @@ public class UserServiceTest {
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
 			assertThrows(CustomBadRequestException.class, () -> userService.createUser(mock(CreateUserDTO.class)), "Invalid fields");
+		}
+	}
+	
+	@Nested
+	class GetUserByIDTest {
+
+		@Test
+		void shouldGetUserByID() {
+			when(userRepository.findById(anyInt())).thenReturn(Optional.of(UserMockTest.userA));
+			when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(UserMockTest.getUserA);
+			
+			GetUserDTO user = userService.getUserByID(UserMockTest.userA.getId());
+			
+			assertNotNull(user);
+			assertEquals(UserMockTest.userA.getId(), user.getId());
+		}
+		
+		@Test
+		void shouldNotGetUserByID() {
+			when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
+			assertNull(userService.getUserByID(anyInt()));
 		}
 	}
 	

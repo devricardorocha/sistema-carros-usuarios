@@ -3,6 +3,7 @@ package com.exemplo.sistemacarrousuario.domain.service.impl;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.repository.UserRepository;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
@@ -30,8 +32,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public List<CreateUserDTO> getAll() {
-		return userRepository.findAll().stream().map(user -> modelMapper.map(user, CreateUserDTO.class))
+	public List<GetUserDTO> getAll() {
+		return userRepository.findAll().stream().map(user -> modelMapper.map(user, GetUserDTO.class))
 				.collect(Collectors.toList());
 	}
 
@@ -56,6 +58,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			throw new ResourceNotFoundException("User not found");
 
 		return user;
+	}
+
+	@Override
+	public GetUserDTO getUserByID(Integer id) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (userOptional.isPresent())
+			return modelMapper.map(userOptional.get(), GetUserDTO.class);
+		
+		return null;
 	}
 
 }

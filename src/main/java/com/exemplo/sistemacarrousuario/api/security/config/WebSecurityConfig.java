@@ -49,7 +49,7 @@ public class WebSecurityConfig {
 	private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeHttpRequest() {
 		return authorizationManagerRequestMatcherRegistry ->
                   authorizationManagerRequestMatcherRegistry
-                          .requestMatchers("/users/**", "/signin/**","/v3/api-docs/**", "/h2-console/**").permitAll()
+                          .requestMatchers("/users/**", "/signin/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
                           .anyRequest().authenticated();
 	}
 
