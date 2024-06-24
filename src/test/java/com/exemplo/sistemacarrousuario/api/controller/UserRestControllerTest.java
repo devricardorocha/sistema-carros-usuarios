@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +47,9 @@ public class UserRestControllerTest {
 
 	@MockBean
 	private HttpRequestValidator<CreateUserDTO> createUserValidator;
+	
+	@MockBean
+	private HttpRequestValidator<UpdateUserDTO> updateUserValidator;
 
 	@BeforeEach
 	@SuppressWarnings("deprecation")
@@ -78,6 +83,17 @@ public class UserRestControllerTest {
 		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
 
 		mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+	}
+	
+	@Test
+	void shouldUpdateUser() throws Exception {
+		doReturn(UserMockTest.updatedUserA)
+			.when(userService).updateUser(anyInt(), any(UpdateUserDTO.class));
+
+		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.updatedUserA);
+
+		mockMvc.perform(put(USERS_PATH + "/{id}", UserMockTest.getUserA.getId()).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
 	}
 

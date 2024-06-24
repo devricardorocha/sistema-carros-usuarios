@@ -24,6 +24,7 @@ import org.modelmapper.ModelMapper;
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.repository.UserRepository;
@@ -106,5 +107,36 @@ public class UserServiceTest {
 		}
 	}
 	
-
+	@Nested
+	class UpdateUserTest {
+		
+		@Test
+		void shouldUpdateUser() {
+			when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
+			when(userRepository.existsByLogin(any())).thenReturn(Boolean.FALSE);
+			when(userRepository.findById(any())).thenReturn(Optional.of(UserMockTest.userA));
+			when(userRepository.save(any(User.class))).thenReturn(UserMockTest.userA);
+			when(modelMapper.map(any(User.class), eq(UpdateUserDTO.class))).thenReturn(UserMockTest.updatedUserA);
+			
+			UpdateUserDTO user = userService.updateUser(UserMockTest.updatedUserA.getId(), UserMockTest.updatedUserA);
+			
+			assertNotNull(user);
+			assertEquals(UserMockTest.updatedUserA.getId(), user.getId());
+			assertEquals(UserMockTest.updatedUserA.getFirstName(), user.getFirstName());
+		}
+		
+		@Test
+		void shouldNotUpdateUserWithExistingEmail() {
+			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
+			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.FALSE);
+			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
+		}
+		
+		@Test
+		void shouldNotUpdateUserWithExistingLogin() {
+			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
+			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
+			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
+		}
+	}
 }

@@ -17,6 +17,7 @@ import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequest
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.repository.UserRepository;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
@@ -63,10 +64,37 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public GetUserDTO getUserByID(Integer id) {
 		Optional<User> userOptional = userRepository.findById(id);
-		if (userOptional.isPresent())
-			return modelMapper.map(userOptional.get(), GetUserDTO.class);
+		return userOptional.map(user -> modelMapper.map(userOptional.get(), GetUserDTO.class)).orElse(null);
+	}
+
+	@Override
+	public UpdateUserDTO updateUser(Integer id, UpdateUserDTO user) {
 		
-		return null;
+		if (userRepository.existsByEmail(user.getEmail()))
+			throw new CustomBadRequestException("Email already exists");
+
+		if (userRepository.existsByLogin(user.getLogin()))
+			throw new CustomBadRequestException("Login already exists");
+
+		if (!id.equals(user.getId()))
+			throw new CustomBadRequestException("Invalid fields");
+
+		Optional<User> userOptional = userRepository.findById(user.getId());
+		if (userOptional.isEmpty())
+			throw new ResourceNotFoundException("User not found");
+		
+		User updatedUser = userOptional.get();
+		
+		updatedUser.setFirstName(user.getFirstName());
+		updatedUser.setLastName(user.getLastName());
+		updatedUser.setEmail(user.getEmail());
+		updatedUser.setLogin(user.getLogin());
+		updatedUser.setBirthday(user.getBirthday());
+		updatedUser.setPhone(user.getPhone());
+		if (Objects.nonNull(user.getPassword()))
+			updatedUser.setPassword(PasswordUtils.encode(user.getPassword()));
+		
+		return modelMapper.map(userRepository.save(updatedUser), UpdateUserDTO.class);
 	}
 
 }

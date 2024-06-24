@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 
 /**
  * Serviço para gerenciamento de usuários.
@@ -32,5 +33,13 @@ public interface UserService {
      * @return o DTO do usuário encontrado.
      */
     GetUserDTO getUserByID(Integer id);
+    
+    /**
+     * Atualiza as informações de um usuário existente.
+     *
+     * @param user O DTO contendo as novas informações do usuário a serem atualizadas.
+     * @return O DTO atualizado do usuário.
+     */
+    UpdateUserDTO updateUser(Integer id, UpdateUserDTO user);
 	
 }
