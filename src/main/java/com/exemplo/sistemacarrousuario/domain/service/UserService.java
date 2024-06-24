@@ -42,4 +42,12 @@ public interface UserService {
      */
     UpdateUserDTO updateUser(Integer id, UpdateUserDTO user);
 	
+    /**
+     * Remove um usuário pelo ID.
+     *
+     * <p>Este método deleta um usuário existente com base no ID fornecido.</p>
+     *
+     * @param id o ID do usuário a ser removido
+     */
+    void deleteUserByID(Integer id);
 }

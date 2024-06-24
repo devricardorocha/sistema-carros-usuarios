@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -137,9 +138,21 @@ public class UserRestController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Request inválido"),
+			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<UpdateUserDTO> createUser(@PathVariable Integer id, @Valid @RequestBody UpdateUserDTO body) {
 		updateUserValidator.validate(body);
 		return new ResponseEntity<UpdateUserDTO>(userService.updateUser(id, body), HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Remover usuário")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "204", description = "Usuário removido com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
+	public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+		userService.deleteUserByID(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 }
