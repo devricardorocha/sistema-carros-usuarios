@@ -14,9 +14,13 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+/**
+ * Utilitário para operações relacionadas ao token JWT.
+ *
+ * <p>Esta classe fornece métodos para gerar, validar, atualizar e extrair informações de tokens JWT.</p>
+ */
 @Component
 public class JwtTokenUtils {
 
@@ -30,16 +34,34 @@ public class JwtTokenUtils {
 	@Value("${jwt.expiration}")
 	private Long expiration;
 
+	 /**
+     * Obtém o login (username) do token JWT.
+     *
+     * @param token o token JWT
+     * @return o login extraído do token
+     */
 	public String getLoginFromToken(String token) {
 		Optional<Claims> claims = getClaimsFromToken(token);
 		return claims.isPresent() ? claims.get().getSubject() : null;
 	}
 
+    /**
+     * Obtém a data de expiração do token JWT.
+     *
+     * @param token o token JWT
+     * @return a data de expiração do token
+     */
 	public Date getExpirationDateFromToken(String token) {
 		Optional<Claims> claims = getClaimsFromToken(token);
 		return claims.isPresent() ? claims.get().getExpiration() : null;
 	}
 
+    /**
+     * Atualiza o token JWT, redefinindo a data de criação.
+     *
+     * @param token o token JWT
+     * @return o novo token atualizado
+     */
 	public String refreshToken(String token) {
 		Optional<Claims> claims = getClaimsFromToken(token);
 		if (claims.isPresent()) {
@@ -50,10 +72,22 @@ public class JwtTokenUtils {
 		return null;
 	}
 
+    /**
+     * Verifica se o token JWT é válido.
+     *
+     * @param token o token JWT
+     * @return {@code true} se o token for válido, caso contrário {@code false}
+     */
 	public Boolean isTokenValid(String token) {
 		return !isTokenExpired(token);
 	}
 
+    /**
+     * Gera um novo token JWT para um usuário.
+     *
+     * @param details os detalhes do usuário
+     * @return o token JWT gerado
+     */
 	public String getToken(UserDetails details) {
 
 		Map<String, Object> claims = new HashMap<>();
@@ -106,8 +140,7 @@ public class JwtTokenUtils {
 	}
 	
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
 }

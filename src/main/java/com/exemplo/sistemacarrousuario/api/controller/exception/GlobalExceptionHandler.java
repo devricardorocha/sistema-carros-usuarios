@@ -1,6 +1,9 @@
 package com.exemplo.sistemacarrousuario.api.controller.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -21,6 +24,24 @@ public class GlobalExceptionHandler {
         return new ErrorDetails(ex.getMessage(), ex.getErrorCode());
     }
 
+    @ExceptionHandler(value = {AuthenticationFailedException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorDetails unauthorizedException(AuthenticationFailedException ex, WebRequest mockWebRequest) {
+        return new ErrorDetails(ex.getMessage(), ex.getErrorCode());
+    }
+
+    @ExceptionHandler(value = {InternalAuthenticationServiceException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorDetails unauthorizedException(InternalAuthenticationServiceException ex, WebRequest mockWebRequest) {
+        return new ErrorDetails(ex.getMessage(), HttpStatus.UNAUTHORIZED.value());
+    }
+    
+    @ExceptionHandler(value = {BadCredentialsException.class})
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorDetails unauthorizedException(BadCredentialsException ex, WebRequest mockWebRequest) {
+        return new ErrorDetails("Invalid login or password", HttpStatus.UNAUTHORIZED.value());
+    }
+    
     @ExceptionHandler(value = {CustomHttpException.class, HttpMediaTypeNotSupportedException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorDetails badRequestException(CustomHttpException ex, WebRequest mockWebRequest) {
