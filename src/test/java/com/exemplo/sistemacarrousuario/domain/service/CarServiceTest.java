@@ -1,6 +1,7 @@
 package com.exemplo.sistemacarrousuario.domain.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,6 +11,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Nested;
@@ -23,6 +25,7 @@ import org.modelmapper.ModelMapper;
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 import com.exemplo.sistemacarrousuario.domain.mock.CarMockTest;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
@@ -45,6 +48,13 @@ public class CarServiceTest {
 	@Mock
 	private ModelMapper modelMapper;
 	
+	@Test
+	void shouldFetchAllCars() {
+		when(carRepository.findByUserId(anyLong())).thenReturn(List.of(mock(Car.class)));
+		when(modelMapper.map(any(Car.class), eq(GetCarDTO.class))).thenReturn(mock(GetCarDTO.class));
+		List<GetCarDTO> users = carService.getAllByUser(anyLong());
+		assertFalse(users.isEmpty());
+	}
 
 	@Nested
 	class CreateUserTest {

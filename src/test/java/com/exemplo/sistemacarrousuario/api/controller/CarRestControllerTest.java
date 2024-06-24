@@ -3,10 +3,14 @@ package com.exemplo.sistemacarrousuario.api.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
+
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -55,6 +59,16 @@ public class CarRestControllerTest {
 	@SuppressWarnings("deprecation")
 	public void beforeEach() {
 		MockitoAnnotations.initMocks(this);
+	}
+	
+	@Test
+	void shouldFetchAllCars() throws Exception {
+		doReturn(List.of(CarMockTest.carA)).when(carService).getAllByUser(anyLong());
+		this.mockMvc
+				.perform(get(CARS_PATH).header(HttpHeaders.AUTHORIZATION, authorization)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$[0].id").exists())
+				.andExpect(jsonPath("$[0].id", Is.is(CarMockTest.carA.getId().intValue())));
 	}
 	
 	@Test
