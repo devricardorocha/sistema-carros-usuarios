@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+	    <sonar.host.url>http://localhost:9000</sonar.host.url>
+	    <sonar.login>squ_840306f42340a10e178eca83a8fe739826aa4b7d</sonar.login>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -123,6 +125,7 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>0.11.5</version>
 		</dependency>
+		
 	</dependencies>
 
 	<build>
