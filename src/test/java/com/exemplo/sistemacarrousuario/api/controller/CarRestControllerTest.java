@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +29,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.mock.CarMockTest;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.service.CarService;
@@ -57,6 +60,9 @@ public class CarRestControllerTest {
 
 	@MockBean
 	private HttpRequestValidator<CreateCarDTO> createCarValidator;
+
+	@MockBean
+	private HttpRequestValidator<UpdateCarDTO> updateCarValidator;
 
 	@BeforeEach
 	@SuppressWarnings("deprecation")
@@ -102,4 +108,17 @@ public class CarRestControllerTest {
 		mockMvc.perform(delete(CARS_PATH + "/{id}", UserMockTest.getUserA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}
+	
+	@Test
+	void shouldUpdateUser() throws Exception {
+		doReturn(CarMockTest.updatedCarA)
+			.when(carService).updateCarByUser(anyLong(), anyLong(), any(UpdateCarDTO.class));
+
+		String userJSON = new ObjectMapper().writeValueAsString(CarMockTest.updatedCarA);
+
+		mockMvc.perform(put(CARS_PATH + "/{id}", CarMockTest.getCarA.getId()).content(userJSON)
+				.contentType(MediaType.APPLICATION_JSON_VALUE).header(HttpHeaders.AUTHORIZATION, authorization))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+	}
+	
 }

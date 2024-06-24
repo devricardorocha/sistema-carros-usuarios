@@ -29,6 +29,7 @@ import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequest
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 import com.exemplo.sistemacarrousuario.domain.mock.CarMockTest;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
@@ -130,6 +131,24 @@ public class CarServiceTest {
 		void shouldNotDeleteUserByUnexistingID() {
 			when(carRepository.existsByIdAndUserId(anyLong(), anyLong())).thenReturn(Boolean.FALSE);
 			assertThrows(ResourceNotFoundException.class, () -> carService.deleteCarByIDAndUserID(eq(CarMockTest.carA.getId()), anyLong()));
+		}
+	}
+	
+	@Nested
+	class UpdateCarTest {
+		
+		@Test
+		void shouldUpdateCar() {
+			when(carRepository.findByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.of(CarMockTest.carA));
+			when(carRepository.existsByLicensePlate(anyString())).thenReturn(Boolean.FALSE);
+			when(carRepository.save(any(Car.class))).thenReturn(CarMockTest.carA);
+			when(modelMapper.map(any(Car.class), eq(UpdateCarDTO.class))).thenReturn(CarMockTest.updatedCarA);
+			
+			UpdateCarDTO car = carService.updateCarByUser(CarMockTest.updatedCarA.getId(), CarMockTest.carA.getUser().getId(), CarMockTest.updatedCarA);
+			
+			assertNotNull(car);
+			assertEquals(CarMockTest.updatedCarA.getId(), car.getId());
+			assertEquals(CarMockTest.updatedCarA.getColor(), car.getColor());
 		}
 	}
 	

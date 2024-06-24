@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
 
 /**
  * Serviço para gerenciamento de carros do usuário.
@@ -46,5 +47,15 @@ public interface CarService {
      * @param userId o ID do usuário
      */
     void deleteCarByIDAndUserID(Long id, Long userId);
+    
+    /**
+     * Atualiza as informações de um usuário existente.
+     *
+     * @param id o ID do carro a ser atualizado
+     * @param id o ID do usuário do carro a ser atualizado
+     * @param car O DTO contendo as novas informações do carro a serem atualizadas.
+     * @return O DTO atualizado do carro.
+     */
+    UpdateCarDTO updateCarByUser(Long id, Long userId, UpdateCarDTO car);
     
 }

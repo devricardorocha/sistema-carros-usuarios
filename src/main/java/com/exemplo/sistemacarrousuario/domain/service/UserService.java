@@ -37,6 +37,7 @@ public interface UserService {
     /**
      * Atualiza as informações de um usuário existente.
      *
+     * @param id o ID do usuário a ser atualizado
      * @param user O DTO contendo as novas informações do usuário a serem atualizadas.
      * @return O DTO atualizado do usuário.
      */
