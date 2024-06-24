@@ -12,6 +12,7 @@ import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequest
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.repository.CarRepository;
@@ -64,6 +65,29 @@ public class CarServiceImpl implements CarService {
 			throw new ResourceNotFoundException("Car not found");
 		
 		carRepository.deleteById(id);
+	}
+
+	@Override
+	public UpdateCarDTO updateCarByUser(Long id, Long userId, UpdateCarDTO car) {
+		
+		if (!id.equals(car.getId()))
+			throw new CustomBadRequestException("Invalid fields");
+		
+		Optional<Car> carOptional = carRepository.findByIdAndUserId(id, userId);
+		if (carOptional.isEmpty())
+			throw new ResourceNotFoundException("Car not found");
+
+		if (carRepository.existsByLicensePlate(car.getLicensePlate()))
+			throw new CustomBadRequestException("License plate already exists");
+		
+		Car updatedCar = carOptional.get();
+		
+		updatedCar.setLicensePlate(car.getLicensePlate());
+		updatedCar.setModel(car.getModel());
+		updatedCar.setColor(car.getColor());
+		updatedCar.setYear(car.getYear());
+		
+		return modelMapper.map(carRepository.save(updatedCar), UpdateCarDTO.class);
 	}
 	
 }

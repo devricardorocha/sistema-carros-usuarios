@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.service.CarService;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 
@@ -49,6 +51,9 @@ public class CarRestController {
 	
 	@Autowired
 	private HttpRequestValidator<CreateCarDTO> createCarValidator;
+	
+	@Autowired
+	private HttpRequestValidator<UpdateCarDTO> updateCarValidator;
 	
 	/**
 	 * Endpoint para adicionar um carro ao usuário logado.
@@ -168,5 +173,36 @@ public class CarRestController {
 
 		carService.deleteCarByIDAndUserID(id, userId);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+	
+	/**
+	 * Endpoint para atualizar um carro existente do usuário logado pelo ID.
+	 *
+	 * <p>Este método lida com solicitações HTTP PUT no caminho "/cars/{id}".</p>
+	 *
+	 * @param id o ID do carro a ser atualizado
+	 * @param body o objeto UpdateCarDTO contendo os novos dados do carro
+	 * @return ResponseEntity contendo o UpdateCarDTO do carro atualizado e o status HTTP 200 (OK)
+	 *
+	 * <ul>
+	 *   <li>{@code 200}: Usuário atualizado com sucesso</li>
+	 *   <li>{@code 400}: Request inválido</li>
+	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
+	 * </ul>
+	 */
+	@PutMapping("/{id}")
+	@Operation(summary = "Atualizar carro")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Carro atualizado com sucesso"),
+			@ApiResponse(responseCode = "400", description = "Request inválido"),
+			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
+	public ResponseEntity<UpdateCarDTO> createUser(@PathVariable Long id, @Valid @RequestBody UpdateCarDTO body,
+			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+		
+		updateCarValidator.validate(body);
+		Long userId = userService.getUserIDByLogin(jwtTokenUtils.getLoginFromAuthorization(authorization));
+		
+		return new ResponseEntity<UpdateCarDTO>(carService.updateCarByUser(id, userId, body), HttpStatus.OK);
 	}
 }
