@@ -2,7 +2,9 @@ package com.exemplo.sistemacarrousuario.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -95,6 +97,14 @@ public class UserRestControllerTest {
 
 		mockMvc.perform(put(USERS_PATH + "/{id}", UserMockTest.getUserA.getId()).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+	}
+	
+	
+	@Test
+	void shouldDeleteUser() throws Exception {
+		doNothing().when(userService).deleteUserByID(anyInt());
+		mockMvc.perform(delete(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}
 
 }

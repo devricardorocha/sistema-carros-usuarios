@@ -1,5 +1,6 @@
 package com.exemplo.sistemacarrousuario.domain.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
+import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
@@ -137,6 +139,22 @@ public class UserServiceTest {
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
 			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
+		}
+	}
+	
+	@Nested
+	class DeleteUserTest {
+
+		@Test
+		void shouldDeleteUserByID() {
+			when(userRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
+			assertDoesNotThrow(() -> userService.deleteUserByID(UserMockTest.userA.getId()));
+		}
+		
+		@Test
+		void shouldNotDeleteUserByUnexistingID() {
+			when(userRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
+			assertThrows(ResourceNotFoundException.class, () -> userService.deleteUserByID(UserMockTest.userA.getId()));
 		}
 	}
 }
