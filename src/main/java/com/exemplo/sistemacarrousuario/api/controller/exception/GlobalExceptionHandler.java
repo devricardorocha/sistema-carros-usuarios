@@ -2,7 +2,6 @@ package com.exemplo.sistemacarrousuario.api.controller.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,4 +52,6 @@ public class GlobalExceptionHandler {
     public ErrorDetails internalServerErrorException(Exception ex, WebRequest mockWebRequest) {
         return new ErrorDetails("Internal server error", HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
+    
+    
 }
