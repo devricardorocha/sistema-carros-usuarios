@@ -66,7 +66,7 @@ public class GetUserDTO {
 	 * Data de registro do usuário.
 	 */
 	@Schema(description = "Data de registro do usuário", example = "1992-09-30")
-	private LocalDate creation;
+	private LocalDate created;
 
 	/**
 	 * Data e hora do último login do usuário.

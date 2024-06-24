@@ -65,7 +65,7 @@ public class CreateUserDTO {
 	private String phone;
 
 	@Schema(description = "Data de registro do usuário", example = "1992-09-30")
-	private LocalDate creation;
+	private LocalDate created;
 
 	@Schema(description = "Data e hora do último login do usuário", example = "1992-09-30")
 	private LocalDateTime lastLogin;

@@ -28,9 +28,9 @@ CREATE TABLE cars (
 );
 
 INSERT INTO users (firstName, lastName, email, birthday, login, password, phone, created, lastLogin) VALUES
-('Alice', 'Silva', 'alice.silva@example.com', '1990-01-15', 'alice_silva', 'senha123', '81123456789', CURRENT_DATE, CURRENT_TIMESTAMP),
-('Bruno', 'Costa', 'bruno.costa@example.com', '1985-05-23', 'bruno_costa', 'senha123', '81987654321', CURRENT_DATE, CURRENT_TIMESTAMP),
-('Carla', 'Souza', 'carla.souza@example.com', '1992-09-30', 'carla_souza', 'senha123', '81456789123', CURRENT_DATE, CURRENT_TIMESTAMP);
+('Alice', 'Silva', 'alice.silva@example.com', '1990-01-15', 'alice_silva', '$2a$10$ez3tz3lKvMBaCAAbz6CGJ.r.c59fZvPHb2OawdLkoCdNo9Dx0tx7K', '81123456789', CURRENT_DATE, CURRENT_TIMESTAMP),
+('Bruno', 'Costa', 'bruno.costa@example.com', '1985-05-23', 'bruno_costa', '$2a$10$ez3tz3lKvMBaCAAbz6CGJ.r.c59fZvPHb2OawdLkoCdNo9Dx0tx7K', '81987654321', CURRENT_DATE, CURRENT_TIMESTAMP),
+('Carla', 'Souza', 'carla.souza@example.com', '1992-09-30', 'carla_souza', '$2a$10$ez3tz3lKvMBaCAAbz6CGJ.r.c59fZvPHb2OawdLkoCdNo9Dx0tx7K', '81456789123', CURRENT_DATE, CURRENT_TIMESTAMP);
 
 INSERT INTO cars (`year`, licensePlate, model, color, users_id) VALUES
 (2020, 'ABC-1234', 'Corolla', 'Preto', 1),
