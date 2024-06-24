@@ -3,11 +3,34 @@ package com.exemplo.sistemacarrousuario.domain.service;
 import java.util.List;
 
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
 
+/**
+ * Serviço para gerenciamento de usuários.
+ */
 public interface UserService {
 
-	List<CreateUserDTO> getAll();
+    /**
+     * Retorna uma lista de todos os usuários.
+     *
+     * @return uma lista de DTOs contendo informações dos usuários.
+     */
+    List<GetUserDTO> getAll();
 
-	CreateUserDTO createUser(CreateUserDTO user);
+    /**
+     * Cria um novo usuário.
+     *
+     * @param user O DTO contendo as informações para criar um novo usuário.
+     * @return o DTO do usuário criado.
+     */
+    CreateUserDTO createUser(CreateUserDTO user);
+	
+    /**
+     * Retorna um usuário pelo ID.
+     *
+     * @param id O ID do usuário.
+     * @return o DTO do usuário encontrado.
+     */
+    GetUserDTO getUserByID(Integer id);
 	
 }

@@ -1,6 +1,7 @@
 package com.exemplo.sistemacarrousuario.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,7 +12,6 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,19 +60,25 @@ public class UserRestControllerTest {
 				.andExpect(jsonPath("$[0].id", Is.is(UserMockTest.userA.getId())));
 	}
 
-	@Nested
-	class CreateUserTest {
-
-		@Test
-		void shouldCreateUser() throws Exception {
-			doReturn(UserMockTest.createdUserA)
-				.when(userService).createUser(any(CreateUserDTO.class));
-
-			String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
-
-			mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
-					.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
-		}
-
+	@Test
+	void shouldFetchUserByID() throws Exception {
+		doReturn(UserMockTest.getUserA).when(userService).getUserByID(anyInt());
+		this.mockMvc
+				.perform(get(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").exists())
+				.andExpect(jsonPath("id", Is.is(UserMockTest.getUserA.getId())));
 	}
+
+	@Test
+	void shouldCreateUser() throws Exception {
+		doReturn(UserMockTest.createdUserA)
+			.when(userService).createUser(any(CreateUserDTO.class));
+
+		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
+
+		mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+	}
+
 }
