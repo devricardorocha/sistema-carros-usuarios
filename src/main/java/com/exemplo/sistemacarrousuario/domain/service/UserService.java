@@ -50,4 +50,22 @@ public interface UserService {
      * @param id o ID do usuário a ser removido
      */
     void deleteUserByID(Integer id);
+
+    /**
+     * Obter um usuário pelo login.
+     *
+     * <p>Este método retorna um usuário existente pelo login fornecido.</p>
+     *
+     * @param login o login do usuário
+     */
+    GetUserDTO getUserByLogin(String login);
+
+    /**
+     * Atualiza o último login do usuário.
+     *
+     * <p>Este método atualiza o último login do usuário pelo login fornecido.</p>
+     *
+     * @param login o login do usuário
+     */
+	void updateUserLastLogin(String login);
 }

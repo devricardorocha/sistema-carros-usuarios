@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +45,26 @@ public class UserServiceTest {
 	@Mock
 	private ModelMapper modelMapper;
 	
-	@Test
-	void shouldFetchAllUsers() {
-		when(userRepository.findAll()).thenReturn(List.of(mock(User.class)));
-		when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(mock(GetUserDTO.class));
-		List<GetUserDTO> users = userService.getAll();
-		assertFalse(users.isEmpty());
+	@Nested
+	class GetUserTest {
+
+		@Test
+		void shouldFetchAllUsers() {
+			when(userRepository.findAll()).thenReturn(List.of(mock(User.class)));
+			when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(mock(GetUserDTO.class));
+			List<GetUserDTO> users = userService.getAll();
+			assertFalse(users.isEmpty());
+		}
+		
+		@Test
+		void shouldGetUserByLogin() {
+			when(userRepository.existsByLogin(anyString())).thenReturn(Boolean.TRUE);
+			when(userRepository.findByLogin(anyString())).thenReturn(UserMockTest.userA);
+			when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(UserMockTest.getUserA);
+			GetUserDTO user = userService.getUserByLogin(UserMockTest.getUserA.getLogin());
+			assertNotNull(user);
+			assertEquals(UserMockTest.getUserA.getId(), user.getId());
+		}
 	}
 	
 	@Nested
@@ -140,6 +155,14 @@ public class UserServiceTest {
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
 			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
 		}
+		
+		@Test
+		void shouldUpdateUserLastLogin() {
+			when(userRepository.findByLogin(anyString())).thenReturn(UserMockTest.userA);
+			when(userRepository.save(any(User.class))).thenReturn(UserMockTest.userA);
+			assertDoesNotThrow(() -> userService.updateUserLastLogin(UserMockTest.userA.getLogin()));
+		}
+		
 	}
 	
 	@Nested
@@ -147,13 +170,13 @@ public class UserServiceTest {
 
 		@Test
 		void shouldDeleteUserByID() {
-			when(userRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
+			when(userRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
 			assertDoesNotThrow(() -> userService.deleteUserByID(UserMockTest.userA.getId()));
 		}
 		
 		@Test
 		void shouldNotDeleteUserByUnexistingID() {
-			when(userRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
+			when(userRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
 			assertThrows(ResourceNotFoundException.class, () -> userService.deleteUserByID(UserMockTest.userA.getId()));
 		}
 	}

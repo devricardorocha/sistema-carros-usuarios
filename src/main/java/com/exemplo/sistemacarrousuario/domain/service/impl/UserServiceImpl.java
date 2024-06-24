@@ -1,6 +1,7 @@
 package com.exemplo.sistemacarrousuario.domain.service.impl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,10 +100,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public void deleteUserByID(Integer id) {
-		if (userRepository.existsById(id))
+		if (!userRepository.existsById(id))
 			throw new ResourceNotFoundException("User not found");
 		
 		userRepository.deleteById(id);
+	}
+	
+	@Override
+	public GetUserDTO getUserByLogin(String login) {
+		if (!userRepository.existsByLogin(login))
+			throw new ResourceNotFoundException("User not found");
+		
+		return modelMapper.map(userRepository.findByLogin(login), GetUserDTO.class);
+	}
+
+	@Override
+	public void updateUserLastLogin(String login) {
+		User user = userRepository.findByLogin(login);
+		user.setLastLogin(LocalDateTime.now());
+		userRepository.save(user);
 	}
 
 }
