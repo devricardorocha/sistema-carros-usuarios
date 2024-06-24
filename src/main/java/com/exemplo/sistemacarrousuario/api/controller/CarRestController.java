@@ -9,6 +9,7 @@ import org.apache.tomcat.websocket.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -140,5 +141,32 @@ public class CarRestController {
 		return new ResponseEntity<GetCarDTO>(car, HttpStatus.OK);
 	}
 	
-	
+	/**
+	 * Endpoint para deletar um carro do usuário pelo ID.
+	 *
+	 * <p>Este método lida com solicitações HTTP DELETE no caminho "/cars/{id}".</p>
+	 *
+	 * @param id o ID do carro a ser deletado
+	 * @return ResponseEntity com o status HTTP 204 (No Content)
+	 *
+	 * <ul>
+	 *   <li>{@code 204}: Carro removido com sucesso</li>
+	 *   <li>{@code 404}: Carro não encontrado</li>
+	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
+	 * </ul>
+	 */
+	@DeleteMapping("/{id}")
+	@Operation(summary = "Remover carro")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Carro removido com sucesso"),
+			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id,
+			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+
+		Long userId = userService.getUserIDByLogin(
+				jwtTokenUtils.getLoginFromAuthorization(authorization));
+
+		carService.deleteCarByIDAndUserID(id, userId);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
 }

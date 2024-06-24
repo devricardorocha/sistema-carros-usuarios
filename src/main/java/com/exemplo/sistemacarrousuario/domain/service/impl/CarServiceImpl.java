@@ -57,5 +57,13 @@ public class CarServiceImpl implements CarService {
 		Optional<Car> carOptional = carRepository.findByIdAndUserId(id, userId);
 		return carOptional.map(car -> modelMapper.map(carOptional.get(), GetCarDTO.class)).orElse(null);
 	}
+
+	@Override
+	public void deleteCarByIDAndUserID(Long id, Long userId) {
+		if (!carRepository.existsByIdAndUserId(id, userId))
+			throw new ResourceNotFoundException("Car not found");
+		
+		carRepository.deleteById(id);
+	}
 	
 }

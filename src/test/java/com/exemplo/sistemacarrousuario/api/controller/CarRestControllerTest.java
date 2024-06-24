@@ -2,7 +2,9 @@ package com.exemplo.sistemacarrousuario.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -27,6 +29,7 @@ import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.mock.CarMockTest;
+import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.service.CarService;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,4 +96,10 @@ public class CarRestControllerTest {
 				.andExpect(jsonPath("id", Is.is(CarMockTest.carA.getId().intValue())));
 	}
 	
+	@Test
+	void shouldDeleteCar() throws Exception {
+		doNothing().when(carService).deleteCarByIDAndUserID(anyLong(), anyLong());
+		mockMvc.perform(delete(CARS_PATH + "/{id}", UserMockTest.getUserA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
+	}
 }

@@ -35,4 +35,16 @@ public interface CarService {
      * @return o DTO contendo as informações do carro
      */
     GetCarDTO getCarByIDAndUserByID(Long id, Long userId);
+    
+	
+    /**
+     * Remove um carro do usuário pelo ID.
+     *
+     * <p>Este método deleta um carro do usuário existente com base no ID do carro e do usuário.</p>
+     *
+     * @param id o ID do carro a ser removido
+     * @param userId o ID do usuário
+     */
+    void deleteCarByIDAndUserID(Long id, Long userId);
+    
 }
