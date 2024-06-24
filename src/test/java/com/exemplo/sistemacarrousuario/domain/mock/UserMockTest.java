@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.utils.PasswordUtils;
 
@@ -29,4 +30,7 @@ public abstract class UserMockTest {
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva").phone("81123456789")
 			.build();
 
+	public static UpdateUserDTO updatedUserA = UpdateUserDTO.builder().id(999).firstName("Rosa").lastName("Silva")
+			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva")
+			.password(PasswordUtils.encode("123456")).phone("81123456789").build();
 }
