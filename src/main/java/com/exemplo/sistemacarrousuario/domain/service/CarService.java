@@ -26,4 +26,13 @@ public interface CarService {
      * @return a lista de DTO dos carros do usuário.
      */
 	List<GetCarDTO> getAllByUser(Long userID);
+	
+    /**
+     * Obtém um carro específico por ID do carro e ID de usuário.
+     *
+     * @param id o ID do carro
+     * @param userId o ID do usuário
+     * @return o DTO contendo as informações do carro
+     */
+    GetCarDTO getCarByIDAndUserByID(Long id, Long userId);
 }

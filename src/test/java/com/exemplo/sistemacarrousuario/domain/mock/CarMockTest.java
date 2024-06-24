@@ -1,6 +1,7 @@
 package com.exemplo.sistemacarrousuario.domain.mock;
 
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 
 public abstract class CarMockTest {
@@ -12,5 +13,8 @@ public abstract class CarMockTest {
 			.user(UserMockTest.userA).build();
 
 	public static CreateCarDTO createdCarA = CreateCarDTO.builder().id(999l).color("Branco").model("Civic")
+			.licensePlate("DEF-5678").year(2019).build();
+	
+	public static GetCarDTO getCarA = GetCarDTO.builder().id(999l).color("Branco").model("Civic")
 			.licensePlate("DEF-5678").year(2019).build();
 }

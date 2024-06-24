@@ -3,6 +3,7 @@ package com.exemplo.sistemacarrousuario.domain.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -92,4 +93,24 @@ public class CarServiceTest {
 		}
 	}
 	
+	@Nested
+	class GetCarByIDTest {
+
+		@Test
+		void shouldGetUserByIDAndUserID() {
+			when(carRepository.findByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.of(CarMockTest.carA));
+			when(modelMapper.map(any(Car.class), eq(GetCarDTO.class))).thenReturn(CarMockTest.getCarA);
+			
+			GetCarDTO car = carService.getCarByIDAndUserByID(eq(CarMockTest.carA.getId()), anyLong());
+			
+			assertNotNull(car);
+			assertEquals(CarMockTest.carA.getId(), car.getId());
+		}
+		
+		@Test
+		void shouldNotGetUserByID() {
+			when(carRepository.findByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.empty());
+			assertNull(carService.getCarByIDAndUserByID(anyLong(), anyLong()));
+		}
+	}
 }
