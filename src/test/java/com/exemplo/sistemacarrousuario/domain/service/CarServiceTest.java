@@ -1,5 +1,6 @@
 package com.exemplo.sistemacarrousuario.domain.service;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,6 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -113,4 +115,22 @@ public class CarServiceTest {
 			assertNull(carService.getCarByIDAndUserByID(anyLong(), anyLong()));
 		}
 	}
+	
+	@Nested
+	class DeleteCarTest {
+
+		@Test
+		void shouldDeleteUserByID() {
+			when(carRepository.existsByIdAndUserId(anyLong(), anyLong())).thenReturn(Boolean.TRUE);
+			doNothing().when(carRepository).deleteById(anyLong());
+			assertDoesNotThrow(() -> carService.deleteCarByIDAndUserID(eq(CarMockTest.carA.getId()), anyLong()));
+		}
+		
+		@Test
+		void shouldNotDeleteUserByUnexistingID() {
+			when(carRepository.existsByIdAndUserId(anyLong(), anyLong())).thenReturn(Boolean.FALSE);
+			assertThrows(ResourceNotFoundException.class, () -> carService.deleteCarByIDAndUserID(eq(CarMockTest.carA.getId()), anyLong()));
+		}
+	}
+	
 }

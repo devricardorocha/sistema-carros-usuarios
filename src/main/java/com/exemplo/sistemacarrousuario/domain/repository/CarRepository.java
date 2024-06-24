@@ -17,4 +17,6 @@ public interface CarRepository extends JpaRepository<Car, Long> {
 
 	Optional<Car> findByIdAndUserId(Long id, Long userId);
 
+	Boolean existsByIdAndUserId(Long id, Long userId);
+
 }
