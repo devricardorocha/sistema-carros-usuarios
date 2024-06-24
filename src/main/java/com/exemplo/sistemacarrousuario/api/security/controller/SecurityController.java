@@ -104,7 +104,7 @@ public class SecurityController {
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<GetUserDTO> getUserFromToken(
 			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
-		String login = jwtTokenUtils.getLoginFromToken(authorization.substring(7));
+		String login = jwtTokenUtils.getLoginFromAuthorization(authorization);
 		return new ResponseEntity<GetUserDTO>(userService.getUserByLogin(login), HttpStatus.OK);
 	}
 }

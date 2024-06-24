@@ -63,13 +63,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public GetUserDTO getUserByID(Integer id) {
+	public GetUserDTO getUserByID(Long id) {
 		Optional<User> userOptional = userRepository.findById(id);
 		return userOptional.map(user -> modelMapper.map(userOptional.get(), GetUserDTO.class)).orElse(null);
 	}
 
 	@Override
-	public UpdateUserDTO updateUser(Integer id, UpdateUserDTO user) {
+	public UpdateUserDTO updateUser(Long id, UpdateUserDTO user) {
 		
 		if (userRepository.existsByEmail(user.getEmail()))
 			throw new CustomBadRequestException("Email already exists");
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void deleteUserByID(Integer id) {
+	public void deleteUserByID(Long id) {
 		if (!userRepository.existsById(id))
 			throw new ResourceNotFoundException("User not found");
 		
@@ -119,6 +119,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		User user = userRepository.findByLogin(login);
 		user.setLastLogin(LocalDateTime.now());
 		userRepository.save(user);
+	}
+
+	@Override
+	public Long getUserIDByLogin(String login) {
+		GetUserDTO dto = getUserByLogin(login);
+		return dto.getId();
 	}
 
 }

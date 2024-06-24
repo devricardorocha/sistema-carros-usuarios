@@ -32,7 +32,7 @@ public interface UserService {
      * @param id O ID do usuário.
      * @return o DTO do usuário encontrado.
      */
-    GetUserDTO getUserByID(Integer id);
+    GetUserDTO getUserByID(Long id);
     
     /**
      * Atualiza as informações de um usuário existente.
@@ -40,7 +40,7 @@ public interface UserService {
      * @param user O DTO contendo as novas informações do usuário a serem atualizadas.
      * @return O DTO atualizado do usuário.
      */
-    UpdateUserDTO updateUser(Integer id, UpdateUserDTO user);
+    UpdateUserDTO updateUser(Long id, UpdateUserDTO user);
 	
     /**
      * Remove um usuário pelo ID.
@@ -49,7 +49,7 @@ public interface UserService {
      *
      * @param id o ID do usuário a ser removido
      */
-    void deleteUserByID(Integer id);
+    void deleteUserByID(Long id);
 
     /**
      * Obter um usuário pelo login.
@@ -68,4 +68,13 @@ public interface UserService {
      * @param login o login do usuário
      */
 	void updateUserLastLogin(String login);
+	
+    /**
+     * Obter um ID de usuário pelo login.
+     *
+     * <p>Este método retorna um ID do usuário existente pelo login fornecido.</p>
+     *
+     * @param login o login do usuário
+     */
+	Long getUserIDByLogin(String login);
 }

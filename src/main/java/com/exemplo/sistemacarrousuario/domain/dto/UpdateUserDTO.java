@@ -36,7 +36,7 @@ public class UpdateUserDTO {
 	 */
 	@NotNull(message = "Missing fields")
 	@Schema(description = "ID do usuário")
-	private Integer id;
+	private Long id;
 
 	/**
 	 * Nome do usuário.
