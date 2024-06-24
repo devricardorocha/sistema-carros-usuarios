@@ -11,15 +11,15 @@ import com.exemplo.sistemacarrousuario.domain.utils.PasswordUtils;
 
 public abstract class UserMockTest {
 
-	public static User userA = User.builder().id(999).firstName("Alice").lastName("Silva")
+	public static User userA = User.builder().id(999l).firstName("Alice").lastName("Silva")
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva")
 			.password(PasswordUtils.encode("12345")).phone("81123456789").lastLogin(LocalDateTime.now()).build();
 
-	public static User userB = User.builder().id(998).firstName("Bruno").lastName("Costa")
+	public static User userB = User.builder().id(998l).firstName("Bruno").lastName("Costa")
 			.email("bruno.costa@example.com").birthday(LocalDate.now()).login("bruno_costa")
 			.password(PasswordUtils.encode("12345")).phone("81987654321").build();
 
-	public static CreateUserDTO createdUserA = CreateUserDTO.builder().id(999).firstName("Alice").lastName("Silva")
+	public static CreateUserDTO createdUserA = CreateUserDTO.builder().id(999l).firstName("Alice").lastName("Silva")
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva").password("123456")
 			.phone("81123456789").build();
 
@@ -27,11 +27,11 @@ public abstract class UserMockTest {
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva").password("123456")
 			.phone("81123456789").build();
 
-	public static GetUserDTO getUserA = GetUserDTO.builder().id(999).firstName("Alice").lastName("Silva")
+	public static GetUserDTO getUserA = GetUserDTO.builder().id(999l).firstName("Alice").lastName("Silva")
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva").phone("81123456789")
 			.lastLogin(LocalDateTime.now()).build();
 
-	public static UpdateUserDTO updatedUserA = UpdateUserDTO.builder().id(999).firstName("Rosa").lastName("Silva")
+	public static UpdateUserDTO updatedUserA = UpdateUserDTO.builder().id(999l).firstName("Rosa").lastName("Silva")
 			.email("alice.silva@example.com").birthday(LocalDate.now()).login("alice_silva")
 			.password(PasswordUtils.encode("123456")).phone("81123456789").build();
 }

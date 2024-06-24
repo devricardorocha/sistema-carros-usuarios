@@ -87,7 +87,7 @@ public class UserRestController {
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<CreateUserDTO> createUser(@Valid @RequestBody CreateUserDTO body) {
 		createUserValidator.validate(body);
-		return new ResponseEntity<CreateUserDTO>(userService.createUser(body), HttpStatus.OK);
+		return new ResponseEntity<CreateUserDTO>(userService.createUser(body), HttpStatus.CREATED);
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class UserRestController {
 			@ApiResponse(responseCode = "200", description = "Retorna o usuário"),
 			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<GetUserDTO> getUserByID(@PathVariable Integer id) {
+	public ResponseEntity<GetUserDTO> getUserByID(@PathVariable Long id) {
 		GetUserDTO user = userService.getUserByID(id);
 		if (Objects.isNull(user))
 			return new ResponseEntity<GetUserDTO>(HttpStatus.NOT_FOUND);
@@ -140,7 +140,7 @@ public class UserRestController {
 			@ApiResponse(responseCode = "400", description = "Request inválido"),
 			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<UpdateUserDTO> createUser(@PathVariable Integer id, @Valid @RequestBody UpdateUserDTO body) {
+	public ResponseEntity<UpdateUserDTO> createUser(@PathVariable Long id, @Valid @RequestBody UpdateUserDTO body) {
 		updateUserValidator.validate(body);
 		return new ResponseEntity<UpdateUserDTO>(userService.updateUser(id, body), HttpStatus.OK);
 	}
@@ -165,7 +165,7 @@ public class UserRestController {
 			@ApiResponse(responseCode = "204", description = "Usuário removido com sucesso"),
 			@ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 		userService.deleteUserByID(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}

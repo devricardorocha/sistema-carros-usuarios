@@ -24,7 +24,7 @@ public class GetUserDTO {
 	 * ID do usuário.
 	 */
 	@Schema(description = "ID do usuário")
-	private Integer id;
+	private Long id;
 
 	/**
 	 * Nome do usuário.

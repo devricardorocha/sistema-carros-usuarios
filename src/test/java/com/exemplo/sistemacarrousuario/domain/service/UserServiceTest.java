@@ -11,7 +11,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +80,7 @@ public class UserServiceTest {
 			when(modelMapper.map(any(CreateUserDTO.class), eq(User.class))).thenReturn(mock(User.class));
 			when(modelMapper.map(any(User.class), eq(CreateUserDTO.class))).thenReturn(mock(CreateUserDTO.class));
 			
-			CreateUserDTO user = userService.createUser(CreateUserDTO.builder().id(0).build());
+			CreateUserDTO user = userService.createUser(CreateUserDTO.builder().id(0l).build());
 			
 			assertNotNull(user);
 			assertEquals(0, user.getId());
@@ -108,7 +107,7 @@ public class UserServiceTest {
 
 		@Test
 		void shouldGetUserByID() {
-			when(userRepository.findById(anyInt())).thenReturn(Optional.of(UserMockTest.userA));
+			when(userRepository.findById(anyLong())).thenReturn(Optional.of(UserMockTest.userA));
 			when(modelMapper.map(any(User.class), eq(GetUserDTO.class))).thenReturn(UserMockTest.getUserA);
 			
 			GetUserDTO user = userService.getUserByID(UserMockTest.userA.getId());
@@ -119,8 +118,8 @@ public class UserServiceTest {
 		
 		@Test
 		void shouldNotGetUserByID() {
-			when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
-			assertNull(userService.getUserByID(anyInt()));
+			when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+			assertNull(userService.getUserByID(anyLong()));
 		}
 	}
 	
@@ -146,14 +145,14 @@ public class UserServiceTest {
 		void shouldNotUpdateUserWithExistingEmail() {
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.FALSE);
-			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
+			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0l, mock(UpdateUserDTO.class)), "Invalid fields");
 		}
 		
 		@Test
 		void shouldNotUpdateUserWithExistingLogin() {
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
-			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0, mock(UpdateUserDTO.class)), "Invalid fields");
+			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0l, mock(UpdateUserDTO.class)), "Invalid fields");
 		}
 		
 		@Test
@@ -170,13 +169,13 @@ public class UserServiceTest {
 
 		@Test
 		void shouldDeleteUserByID() {
-			when(userRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
+			when(userRepository.existsById(anyLong())).thenReturn(Boolean.TRUE);
 			assertDoesNotThrow(() -> userService.deleteUserByID(UserMockTest.userA.getId()));
 		}
 		
 		@Test
 		void shouldNotDeleteUserByUnexistingID() {
-			when(userRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
+			when(userRepository.existsById(anyLong())).thenReturn(Boolean.FALSE);
 			assertThrows(ResourceNotFoundException.class, () -> userService.deleteUserByID(UserMockTest.userA.getId()));
 		}
 	}

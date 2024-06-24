@@ -97,6 +97,16 @@ public class JwtTokenUtils {
 		return buildToken(claims);
 	}
 
+	 /**
+     * Obtém o login (username) do header de autorização.
+     *
+     * @param authorization o valor do header Authorization
+     * @return o login extraído do header
+     */
+	public String getLoginFromAuthorization(String authorization) {
+		return getLoginFromToken(authorization.substring(7));
+	}
+	
 	private boolean isTokenExpired(String token) {
 
 		Date expiration = getExpirationDateFromToken(token);

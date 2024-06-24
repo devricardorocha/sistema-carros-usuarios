@@ -1,7 +1,7 @@
 package com.exemplo.sistemacarrousuario.api.controller;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -64,17 +64,17 @@ public class UserRestControllerTest {
 		doReturn(List.of(UserMockTest.userA)).when(userService).getAll();
 		this.mockMvc.perform(get(USERS_PATH).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].id").exists())
-				.andExpect(jsonPath("$[0].id", Is.is(UserMockTest.userA.getId())));
+				.andExpect(jsonPath("$[0].id", Is.is(UserMockTest.userA.getId().intValue())));
 	}
 
 	@Test
 	void shouldFetchUserByID() throws Exception {
-		doReturn(UserMockTest.getUserA).when(userService).getUserByID(anyInt());
+		doReturn(UserMockTest.getUserA).when(userService).getUserByID(anyLong());
 		this.mockMvc
 				.perform(get(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists())
-				.andExpect(jsonPath("id", Is.is(UserMockTest.getUserA.getId())));
+				.andExpect(jsonPath("id", Is.is(UserMockTest.getUserA.getId().intValue())));
 	}
 
 	@Test
@@ -85,13 +85,13 @@ public class UserRestControllerTest {
 		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
 
 		mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
+				.andExpect(status().isCreated()).andExpect(jsonPath("id").exists());
 	}
 	
 	@Test
 	void shouldUpdateUser() throws Exception {
 		doReturn(UserMockTest.updatedUserA)
-			.when(userService).updateUser(anyInt(), any(UpdateUserDTO.class));
+			.when(userService).updateUser(anyLong(), any(UpdateUserDTO.class));
 
 		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.updatedUserA);
 
@@ -101,7 +101,7 @@ public class UserRestControllerTest {
 	
 	@Test
 	void shouldDeleteUser() throws Exception {
-		doNothing().when(userService).deleteUserByID(anyInt());
+		doNothing().when(userService).deleteUserByID(anyLong());
 		mockMvc.perform(delete(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}

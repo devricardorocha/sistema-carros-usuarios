@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 
 @Repository
-public interface CarRepository extends JpaRepository<Car, Integer> {
+public interface CarRepository extends JpaRepository<Car, Long> {
+
+	Boolean existsByLicensePlate(String email);
 
 }

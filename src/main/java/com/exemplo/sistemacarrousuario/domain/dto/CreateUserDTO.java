@@ -29,7 +29,7 @@ import lombok.Setter;
 public class CreateUserDTO {
 
 	@Schema(description = "ID do usuário")
-	private Integer id;
+	private Long id;
 
 	@NotEmpty
 	@Schema(description = "Nome do usuário", example = "Alice")

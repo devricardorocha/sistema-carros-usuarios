@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
 	Boolean existsByEmail(String email);
 	
