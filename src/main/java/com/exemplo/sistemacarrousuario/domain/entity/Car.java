@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,7 +38,7 @@ public class Car {
     /**
      * O ano do carro.
      */
-	@Column(nullable = false)
+	@Column(nullable = false, name = "_year")
 	private Integer year;
 
     /**
@@ -62,6 +63,7 @@ public class Car {
      * O usuário associado ao carro.
      */
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "users_id")
 	private User user;
 
 }

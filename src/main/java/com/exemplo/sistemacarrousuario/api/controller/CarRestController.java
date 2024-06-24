@@ -1,11 +1,14 @@
 package com.exemplo.sistemacarrousuario.api.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.tomcat.websocket.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
 import com.exemplo.sistemacarrousuario.domain.service.CarService;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 
@@ -73,6 +77,30 @@ public class CarRestController {
 				jwtTokenUtils.getLoginFromAuthorization(authorization));
 		
 		return new ResponseEntity<CreateCarDTO>(carService.addCarToUser(userId, body), HttpStatus.CREATED);
+	}
+	
+	/**
+	 * Endpoint para listar todos os carros do usuário logado.
+	 *
+	 * <p>Este método lida com solicitações HTTP GET para obter uma lista de todos os carros do usuário logado no caminho "/cars".</p>
+	 *
+	 * @return ResponseEntity contendo uma lista de GetCarDTO dos carros recuperados e o status HTTP 200 (OK)
+	 *
+	 * <ul>
+	 *   <li>{@code 200}: Retorna a lista de carros</li>
+	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
+	 * </ul>
+	 */
+	@GetMapping
+	@Operation(summary = "Listar carros do usuário logado")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retorna a lista de carros"),
+			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
+	public ResponseEntity<List<GetCarDTO>> getAllUsers(@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+		
+		Long userId = userService.getUserIDByLogin(
+				jwtTokenUtils.getLoginFromAuthorization(authorization));
+		
+		return new ResponseEntity<List<GetCarDTO>>(carService.getAllByUser(userId), HttpStatus.OK);
 	}
 	
 	

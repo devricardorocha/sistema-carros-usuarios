@@ -18,7 +18,7 @@ CREATE TABLE users (
 
 CREATE TABLE cars (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    `year` INT NOT NULL,
+    _year INT NOT NULL,
     licensePlate VARCHAR(20) NOT NULL,
     model VARCHAR(255) NOT NULL,
     color VARCHAR(50) NOT NULL,
@@ -32,7 +32,7 @@ INSERT INTO users (firstName, lastName, email, birthday, login, password, phone,
 ('Bruno', 'Costa', 'bruno.costa@example.com', '1985-05-23', 'bruno_costa', '$2a$10$ez3tz3lKvMBaCAAbz6CGJ.r.c59fZvPHb2OawdLkoCdNo9Dx0tx7K', '81987654321', CURRENT_DATE, CURRENT_TIMESTAMP),
 ('Carla', 'Souza', 'carla.souza@example.com', '1992-09-30', 'carla_souza', '$2a$10$ez3tz3lKvMBaCAAbz6CGJ.r.c59fZvPHb2OawdLkoCdNo9Dx0tx7K', '81456789123', CURRENT_DATE, CURRENT_TIMESTAMP);
 
-INSERT INTO cars (`year`, licensePlate, model, color, users_id) VALUES
+INSERT INTO cars (_year, licensePlate, model, color, users_id) VALUES
 (2020, 'ABC-1234', 'Corolla', 'Preto', 1),
 (2019, 'DEF-5678', 'Civic', 'Branco', 2),
 (2018, 'GHI-9101', 'Focus', 'Cinza', 3),

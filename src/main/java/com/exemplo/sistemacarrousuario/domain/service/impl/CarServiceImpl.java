@@ -1,6 +1,8 @@
 package com.exemplo.sistemacarrousuario.domain.service.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.exemplo.sistemacarrousuario.api.controller.exception.CustomBadRequestException;
 import com.exemplo.sistemacarrousuario.api.controller.exception.ResourceNotFoundException;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
+import com.exemplo.sistemacarrousuario.domain.dto.GetCarDTO;
 import com.exemplo.sistemacarrousuario.domain.entity.Car;
 import com.exemplo.sistemacarrousuario.domain.entity.User;
 import com.exemplo.sistemacarrousuario.domain.repository.CarRepository;
@@ -43,4 +46,10 @@ public class CarServiceImpl implements CarService {
 		return modelMapper.map(carRepository.save(carEntity), CreateCarDTO.class);
 	}
 
+	@Override
+	public List<GetCarDTO> getAllByUser(Long userID) {
+		return carRepository.findByUserId(userID).stream().map(car -> modelMapper.map(car, GetCarDTO.class))
+				.collect(Collectors.toList());
+	}
+	
 }
