@@ -82,4 +82,15 @@ public class CarRestControllerTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated())
 				.andExpect(jsonPath("id").exists());
 	}
+	
+	@Test
+	void shouldFetchUserByID() throws Exception {
+		doReturn(CarMockTest.getCarA).when(carService).getCarByIDAndUserByID(anyLong(), anyLong());
+		this.mockMvc
+				.perform(get(CARS_PATH + "/{id}", CarMockTest.carA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("id").exists())
+				.andExpect(jsonPath("id", Is.is(CarMockTest.carA.getId().intValue())));
+	}
+	
 }

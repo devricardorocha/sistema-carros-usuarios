@@ -51,5 +51,11 @@ public class CarServiceImpl implements CarService {
 		return carRepository.findByUserId(userID).stream().map(car -> modelMapper.map(car, GetCarDTO.class))
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public GetCarDTO getCarByIDAndUserByID(Long id, Long userId) {
+		Optional<Car> carOptional = carRepository.findByIdAndUserId(id, userId);
+		return carOptional.map(car -> modelMapper.map(carOptional.get(), GetCarDTO.class)).orElse(null);
+	}
 	
 }

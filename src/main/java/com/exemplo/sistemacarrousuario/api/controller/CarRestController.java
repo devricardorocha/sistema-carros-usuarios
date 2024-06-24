@@ -1,6 +1,7 @@
 package com.exemplo.sistemacarrousuario.api.controller;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.validation.Valid;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -67,7 +69,7 @@ public class CarRestController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Carro adicionado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Request inválido"),
-			@ApiResponse(responseCode = "401", description = "Não autorizaod"),
+			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<CreateCarDTO> addCarToUser(@Valid @RequestBody CreateCarDTO body,
 			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
@@ -88,19 +90,54 @@ public class CarRestController {
 	 *
 	 * <ul>
 	 *   <li>{@code 200}: Retorna a lista de carros</li>
+	 *   <li>{@code 401}: Não autorizado</li>
 	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
 	 * </ul>
 	 */
 	@GetMapping
 	@Operation(summary = "Listar carros do usuário logado")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retorna a lista de carros"),
+			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<List<GetCarDTO>> getAllUsers(@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+	public ResponseEntity<List<GetCarDTO>> getAllCarsByUser(@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		
 		Long userId = userService.getUserIDByLogin(
 				jwtTokenUtils.getLoginFromAuthorization(authorization));
 		
 		return new ResponseEntity<List<GetCarDTO>>(carService.getAllByUser(userId), HttpStatus.OK);
+	}
+	
+	/**
+	 * Retorna o carro do usuário logado pelo ID do carro.
+	 *
+	 * @param id o ID do carro
+	 * @param authorization o token de autorização JWT do usuário logado
+	 * @return uma ResponseEntity contendo o DTO do carro e o status HTTPHTTP 200 (OK)
+	 *
+	 * <ul>
+	 *   <li>{@code 200}: Retorna o carro</li>
+	 *   <li>{@code 401}: Não autorizado</li>
+	 *   <li>{@code 404}: Carro não encontrado</li>
+	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
+	 * </ul>
+	 */
+	@GetMapping("/{id}")
+	@Operation(summary = "Retorna carro do usuário logado")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retorna o carro"),
+			@ApiResponse(responseCode = "401", description = "Não autorizado"),
+			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
+	public ResponseEntity<GetCarDTO> getCarByIdAndUser(@PathVariable Long id, @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+		
+		Long userId = userService.getUserIDByLogin(
+				jwtTokenUtils.getLoginFromAuthorization(authorization));
+		
+		GetCarDTO car = carService.getCarByIDAndUserByID(id, userId);
+
+		if (Objects.isNull(car))
+			return new ResponseEntity<GetCarDTO>(HttpStatus.NOT_FOUND);
+		
+		return new ResponseEntity<GetCarDTO>(car, HttpStatus.OK);
 	}
 	
 	
