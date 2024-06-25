@@ -32,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Controlador REST para gerenciamento de usuários.
  */
 @RestController
-@RequestMapping(value = "/users", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/users")
 @Tag(name = "Usuários", description = "Api de usuários do Sistema de gestão de Usuários e Carros")
 public class UserRestController {
 	

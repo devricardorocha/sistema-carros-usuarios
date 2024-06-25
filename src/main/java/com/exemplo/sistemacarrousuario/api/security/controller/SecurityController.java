@@ -27,6 +27,7 @@ import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -65,7 +66,7 @@ public class SecurityController {
 	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
 	 * </ul>
      */
-	@PostMapping(value = "/signin", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/signin")
 	@Operation(summary = "Fazer signin no sistema")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Retorna o token JWT e o link para as informações do usuário"),
@@ -96,14 +97,13 @@ public class SecurityController {
 		return new ResponseEntity<UserTokenDto>(new UserTokenDto(token, userLink), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/me", consumes = "application/json", produces = "application/json")
-	@Operation(summary = "Fazer signin no sistema")
+	@GetMapping(value = "/me")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Retorna o usuário associado ao token"),
 			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<GetUserDTO> getUserFromToken(
-			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		String login = jwtTokenUtils.getLoginFromAuthorization(authorization);
 		return new ResponseEntity<GetUserDTO>(userService.getUserByLogin(login), HttpStatus.OK);
 	}

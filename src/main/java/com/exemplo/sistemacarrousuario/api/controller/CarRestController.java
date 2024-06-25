@@ -36,7 +36,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Controlador REST para gerenciamento de carros dos usuários.
  */
 @RestController
-@RequestMapping(value = "/cars", consumes = "application/json", produces = "application/json")
+@RequestMapping(value = "/cars")
 @Tag(name = "Carros", description = "Api de carros do Sistema de gestão de Usuários e Carros")
 public class CarRestController {
 	
