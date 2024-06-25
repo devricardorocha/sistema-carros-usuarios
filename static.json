@@ -1,0 +1,6 @@
+{
+  "root": "javadoc",
+  "routes": {
+    "/": "index.html"
+  }
+}

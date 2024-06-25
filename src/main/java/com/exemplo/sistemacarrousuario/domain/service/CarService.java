@@ -14,8 +14,8 @@ public interface CarService {
     /**
      * Adiciona carro para o usuário.
      *
-     * @param user ID do usuário.
-     * @param user O DTO contendo as informações para adicionar um novo carro.
+     * @param userID ID do usuário.
+     * @param car O DTO contendo as informações para adicionar um novo carro.
      * @return o DTO do carro criado.
      */
 	CreateCarDTO addCarToUser(Long userID, CreateCarDTO car);
@@ -52,7 +52,7 @@ public interface CarService {
      * Atualiza as informações de um usuário existente.
      *
      * @param id o ID do carro a ser atualizado
-     * @param id o ID do usuário do carro a ser atualizado
+     * @param userId o ID do usuário do carro a ser atualizado
      * @param car O DTO contendo as novas informações do carro a serem atualizadas.
      * @return O DTO atualizado do carro.
      */

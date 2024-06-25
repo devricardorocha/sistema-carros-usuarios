@@ -30,7 +30,6 @@ import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.UpdateCarDTO;
-import com.exemplo.sistemacarrousuario.domain.dto.UpdateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.mock.CarMockTest;
 import com.exemplo.sistemacarrousuario.domain.mock.UserMockTest;
 import com.exemplo.sistemacarrousuario.domain.service.CarService;
