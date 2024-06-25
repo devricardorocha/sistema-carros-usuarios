@@ -3,6 +3,7 @@
 
 Sistema para gerenciar o registro de usuários e carros.
 
+---
 ### Ferramentas
 
 *  [Java](https://www.java.com/pt_BR/)
@@ -19,8 +20,9 @@ Sistema para gerenciar o registro de usuários e carros.
 
 #### API
 
-  A API e a documentação do Swagger está disponível no Heroku através do [link](http://smartphone-api.herokuapp.com/api/browser/index.html).
+  A API e a documentação do Swagger está disponível no Heroku através do [link](https://sistema-carros-usuarios-36f7a5a2f523.herokuapp.com/api/swagger-ui/index.html).
 
+---
 ### Estórias do usuário e Solução
 
 As estórias do usuário e a defesa da solução estão compilados no arquivo [DOCS.md](https://github.com/devricardorocha/sistema-carros-usuarios/blob/develop/docs/DOCS.md)
