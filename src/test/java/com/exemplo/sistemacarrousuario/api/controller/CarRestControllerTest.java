@@ -26,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
@@ -39,8 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(CarRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class CarRestControllerTest {
-
-	private static final String CARS_PATH = "/cars";
 
 	@Value("${jwt.bearer.authorization}")
 	private String authorization;
@@ -73,7 +72,7 @@ public class CarRestControllerTest {
 	void shouldFetchAllCars() throws Exception {
 		doReturn(List.of(CarMockTest.carA)).when(carService).getAllByUser(anyLong());
 		this.mockMvc
-				.perform(get(CARS_PATH).header(HttpHeaders.AUTHORIZATION, authorization)
+				.perform(get(ApiPathConstants.Cars.apiPath).header(HttpHeaders.AUTHORIZATION, authorization)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("$[0].id").exists())
 				.andExpect(jsonPath("$[0].id", Is.is(CarMockTest.carA.getId().intValue())));
@@ -86,7 +85,7 @@ public class CarRestControllerTest {
 
 		String userJSON = new ObjectMapper().writeValueAsString(CarMockTest.createdCarA);
 
-		mockMvc.perform(post(CARS_PATH).header(HttpHeaders.AUTHORIZATION, authorization).content(userJSON)
+		mockMvc.perform(post(ApiPathConstants.Cars.apiPath).header(HttpHeaders.AUTHORIZATION, authorization).content(userJSON)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isCreated())
 				.andExpect(jsonPath("id").exists());
 	}
@@ -95,7 +94,7 @@ public class CarRestControllerTest {
 	void shouldFetchUserByID() throws Exception {
 		doReturn(CarMockTest.getCarA).when(carService).getCarByIDAndUserByID(anyLong(), anyLong());
 		this.mockMvc
-				.perform(get(CARS_PATH + "/{id}", CarMockTest.carA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
+				.perform(get(ApiPathConstants.Cars.apiPath + "/{id}", CarMockTest.carA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists())
 				.andExpect(jsonPath("id", Is.is(CarMockTest.carA.getId().intValue())));
@@ -104,7 +103,7 @@ public class CarRestControllerTest {
 	@Test
 	void shouldDeleteCar() throws Exception {
 		doNothing().when(carService).deleteCarByIDAndUserID(anyLong(), anyLong());
-		mockMvc.perform(delete(CARS_PATH + "/{id}", UserMockTest.getUserA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
+		mockMvc.perform(delete(ApiPathConstants.Cars.apiPath + "/{id}", UserMockTest.getUserA.getId()).header(HttpHeaders.AUTHORIZATION, authorization)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}
 	
@@ -115,7 +114,7 @@ public class CarRestControllerTest {
 
 		String userJSON = new ObjectMapper().writeValueAsString(CarMockTest.updatedCarA);
 
-		mockMvc.perform(put(CARS_PATH + "/{id}", CarMockTest.getCarA.getId()).content(userJSON)
+		mockMvc.perform(put(ApiPathConstants.Cars.apiPath + "/{id}", CarMockTest.getCarA.getId()).content(userJSON)
 				.contentType(MediaType.APPLICATION_JSON_VALUE).header(HttpHeaders.AUTHORIZATION, authorization))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
 	}

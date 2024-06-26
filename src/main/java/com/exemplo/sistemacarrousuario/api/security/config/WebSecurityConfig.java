@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.security.JwtAuthenticationEntryPoint;
 import com.exemplo.sistemacarrousuario.api.security.filters.JwtAuthenticationTokenFilter;
 
@@ -49,7 +50,8 @@ public class WebSecurityConfig {
 	private Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeHttpRequest() {
 		return authorizationManagerRequestMatcherRegistry ->
                   authorizationManagerRequestMatcherRegistry
-                          .requestMatchers("/users/**", "/signin/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
+                          .requestMatchers(ApiPathConstants.unauthenticatedApiResources).permitAll()
+                          .requestMatchers(ApiPathConstants.unauthenticatedApiFilesPattern).permitAll()
                           .anyRequest().authenticated();
 	}
 
