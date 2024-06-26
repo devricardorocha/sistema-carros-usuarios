@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
 import com.exemplo.sistemacarrousuario.domain.dto.GetUserDTO;
@@ -32,7 +33,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Controlador REST para gerenciamento de usuários.
  */
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = ApiPathConstants.Users.apiPath)
 @Tag(name = "Usuários", description = "Api de usuários do Sistema de gestão de Usuários e Carros")
 public class UserRestController {
 	

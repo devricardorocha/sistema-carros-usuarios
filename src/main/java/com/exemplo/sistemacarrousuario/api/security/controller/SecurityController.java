@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.security.dto.JwtAuthenticationDTO;
 import com.exemplo.sistemacarrousuario.api.security.dto.UserTokenDto;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
@@ -66,7 +67,7 @@ public class SecurityController {
 	 *   <li>{@code 500}: Erro inesperado na aplicação</li>
 	 * </ul>
      */
-	@PostMapping(value = "/signin")
+	@PostMapping(value = ApiPathConstants.SignIn.apiPath)
 	@Operation(summary = "Fazer signin no sistema")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Retorna o token JWT e o link para as informações do usuário"),
@@ -97,7 +98,7 @@ public class SecurityController {
 		return new ResponseEntity<UserTokenDto>(new UserTokenDto(token, userLink), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/me")
+	@GetMapping(value = ApiPathConstants.Me.apiPath)
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Retorna o usuário associado ao token"),
 			@ApiResponse(responseCode = "401", description = "Não autorizado"),

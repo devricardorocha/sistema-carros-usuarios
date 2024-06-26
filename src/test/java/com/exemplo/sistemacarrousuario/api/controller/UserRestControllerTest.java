@@ -24,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateUserDTO;
@@ -35,8 +36,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(UserRestController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class UserRestControllerTest {
-
-	private static final String USERS_PATH = "/users";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -62,7 +61,7 @@ public class UserRestControllerTest {
 	@Test
 	void shouldFetchAllUsers() throws Exception {
 		doReturn(List.of(UserMockTest.userA)).when(userService).getAll();
-		this.mockMvc.perform(get(USERS_PATH).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+		this.mockMvc.perform(get(ApiPathConstants.Users.apiPath).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(jsonPath("$[0].id").exists())
 				.andExpect(jsonPath("$[0].id", Is.is(UserMockTest.userA.getId().intValue())));
 	}
@@ -71,7 +70,7 @@ public class UserRestControllerTest {
 	void shouldFetchUserByID() throws Exception {
 		doReturn(UserMockTest.getUserA).when(userService).getUserByID(anyLong());
 		this.mockMvc
-				.perform(get(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
+				.perform(get(ApiPathConstants.Users.apiPath + "/{id}", UserMockTest.getUserA.getId())
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists())
 				.andExpect(jsonPath("id", Is.is(UserMockTest.getUserA.getId().intValue())));
@@ -84,7 +83,7 @@ public class UserRestControllerTest {
 
 		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.createdUserAWithoutID);
 
-		mockMvc.perform(post(USERS_PATH).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
+		mockMvc.perform(post(ApiPathConstants.Users.apiPath).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isCreated()).andExpect(jsonPath("id").exists());
 	}
 	
@@ -95,14 +94,14 @@ public class UserRestControllerTest {
 
 		String userJSON = new ObjectMapper().writeValueAsString(UserMockTest.updatedUserA);
 
-		mockMvc.perform(put(USERS_PATH + "/{id}", UserMockTest.getUserA.getId()).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
+		mockMvc.perform(put(ApiPathConstants.Users.apiPath + "/{id}", UserMockTest.getUserA.getId()).content(userJSON).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().isOk()).andExpect(jsonPath("id").exists());
 	}
 	
 	@Test
 	void shouldDeleteUser() throws Exception {
 		doNothing().when(userService).deleteUserByID(anyLong());
-		mockMvc.perform(delete(USERS_PATH + "/{id}", UserMockTest.getUserA.getId())
+		mockMvc.perform(delete(ApiPathConstants.Users.apiPath + "/{id}", UserMockTest.getUserA.getId())
 				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}
 

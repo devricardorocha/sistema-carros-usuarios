@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exemplo.sistemacarrousuario.api.controller.constants.ApiPathConstants;
 import com.exemplo.sistemacarrousuario.api.security.utils.JwtTokenUtils;
 import com.exemplo.sistemacarrousuario.api.validator.HttpRequestValidator;
 import com.exemplo.sistemacarrousuario.domain.dto.CreateCarDTO;
@@ -36,7 +37,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * Controlador REST para gerenciamento de carros dos usuários.
  */
 @RestController
-@RequestMapping(value = "/cars")
+@RequestMapping(value = ApiPathConstants.Cars.apiPath)
 @Tag(name = "Carros", description = "Api de carros do Sistema de gestão de Usuários e Carros")
 public class CarRestController {
 	
