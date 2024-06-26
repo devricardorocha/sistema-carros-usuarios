@@ -45,6 +45,7 @@ public abstract class ApiPathConstants {
 	private static String[] getUnauthenticatedApiFilesPattern() {
 		return new String[] {
 				"/",
+				"/target/site/apidocs/**",
 				"/swagger-ui/**",
 				"/v3/api-docs/**",
 				"/h2-console/**",

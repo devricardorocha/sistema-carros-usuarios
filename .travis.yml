@@ -14,6 +14,8 @@ install:
 script:
   - ./mvnw clean verify -B
   - ./mvnw test
+  - ./mvnw javadoc:javadoc
+  - ./mvnw package -DskipTests=true
 
 deploy:
   provider: script
