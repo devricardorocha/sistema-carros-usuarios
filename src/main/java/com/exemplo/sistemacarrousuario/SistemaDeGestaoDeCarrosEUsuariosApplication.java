@@ -9,6 +9,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Hidden;
 
+/**
+ * Sistema de Gestão de Carros e Usuários.
+ *
+ * <p>Este sistema permite a gestão de carros e usuários, fornecendo funcionalidades
+ * como criação, leitura, atualização e exclusão de registros e a autenticação dos recursos da API Rest. O sistema é composto
+ * por um backend em Spring Boot e um frontend em Angular.</p>
+ *
+ * <p>Informações sobre o Desenvolvedor:</p>
+ * <ul>
+ *     <li>Nome: Ricardo Rocha</li>
+ *     <li><a href="https://www.linkedin.com/in/ricardo-de-lima-rocha/">LinkedIn</a></li>
+ *     <li><a href="https://github.com/devricardorocha">GitHub</a></li>
+ * </ul>
+ *
+ * <p>Repositório do Projeto no GitHub:</p>
+ * <ul>
+ *     <li>GitHub: <a href="https://github.com/devricardorocha/sistema-carros-usuarios">https://github.com/devricardorocha/sistema-carros-usuarios</a></li>
+ * </ul>
+ *
+ *
+ * @version 1.0
+ * @since 2024-06-28
+ */
+
 @Hidden
 @RestController
 @SpringBootApplication
