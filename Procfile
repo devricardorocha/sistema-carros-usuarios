@@ -1,1 +1,1 @@
-web: ./mvnw install -Dmaven.javadoc.skip=true && ./mvnw package -DskipTests=true && ./mvnw spring-boot:run
+web: ./mvnw javadoc:javadoc && ./mvnw process-resources && ./mvnw install && ./mvnw spring-boot:run
