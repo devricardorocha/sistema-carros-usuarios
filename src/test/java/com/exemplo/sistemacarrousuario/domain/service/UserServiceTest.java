@@ -143,6 +143,7 @@ public class UserServiceTest {
 		
 		@Test
 		void shouldNotUpdateUserWithExistingEmail() {
+			lenient().when(userRepository.findById(any())).thenReturn(Optional.of(mock(User.class)));
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.FALSE);
 			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0l, mock(UpdateUserDTO.class)), "Invalid fields");
@@ -150,6 +151,7 @@ public class UserServiceTest {
 		
 		@Test
 		void shouldNotUpdateUserWithExistingLogin() {
+			lenient().when(userRepository.findById(any())).thenReturn(Optional.of(mock(User.class)));
 			lenient().when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 			lenient().when(userRepository.existsByLogin(any())).thenReturn(Boolean.TRUE);
 			assertThrows(CustomBadRequestException.class, () -> userService.updateUser(0l, mock(UpdateUserDTO.class)), "Invalid fields");

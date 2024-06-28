@@ -3,9 +3,12 @@ package com.exemplo.sistemacarrousuario;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import io.swagger.v3.oas.annotations.Hidden;
 
@@ -34,7 +37,7 @@ import io.swagger.v3.oas.annotations.Hidden;
  */
 
 @Hidden
-@RestController
+@Controller
 @SpringBootApplication
 public class SistemaDeGestaoDeCarrosEUsuariosApplication {
 
@@ -45,6 +48,11 @@ public class SistemaDeGestaoDeCarrosEUsuariosApplication {
 	@GetMapping("/hello")
 	private ResponseEntity<String> sayHello() {
 		return new ResponseEntity<String>("Hello!", HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+	private String home() {
+		return "redirect:/docs/index.html";
 	}
 	
 }

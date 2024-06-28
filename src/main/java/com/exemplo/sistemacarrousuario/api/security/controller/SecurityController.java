@@ -92,7 +92,7 @@ public class SecurityController {
 		
 		String userLink = new StringBuilder()
 				.append(ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString())
-				.append("/me")
+				.append(ApiPathConstants.Me.apiPath)
 				.toString();
 		
 		return new ResponseEntity<UserTokenDto>(new UserTokenDto(token, userLink), HttpStatus.OK);
