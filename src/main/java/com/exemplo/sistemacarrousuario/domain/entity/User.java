@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class User implements UserDetails {
 	@Column(length = 255, nullable = false)
 	private String password;
 
-	@Column(length = 20, nullable = false)
+	@Column(length = 11, nullable = false)
 	private String phone;
 
 	@Column(nullable = false)
@@ -63,7 +64,7 @@ public class User implements UserDetails {
 	@Column
 	private LocalDateTime lastLogin;
 
-	@OneToMany
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<Car> cars;
 
 	@Override

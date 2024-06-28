@@ -1,1 +1,1 @@
-web: java -jar target/sistemacarrousuario-0.0.1-SNAPSHOT.jar
+web: ./mvnw javadoc:javadoc && ./mvnw process-resources && ./mvnw install && ./mvnw spring-boot:run
