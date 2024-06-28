@@ -1,0 +1,1 @@
+web: ./mvnw javadoc:javadoc && ./mvnw process-resources && ./mvnw install && ./mvnw spring-boot:run

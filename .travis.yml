@@ -1,0 +1,30 @@
+language: java
+jdk:
+  - openjdk17
+
+services:
+  - docker
+
+before_install:
+  - chmod +x mvnw
+
+install:
+  - ./mvnw install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script:
+  - ./mvnw clean verify -B
+  - ./mvnw test
+  - ./mvnw javadoc:javadoc
+  - ./mvnw package -DskipTests=true
+
+deploy:
+  provider: script
+  script:
+    - rvm install 3.0.0
+    - rvm use 3.0.0
+    - gem install faraday-net_http -v 3.0.2
+    - gem install dpl -v 1.10.16
+    - dpl --provider=heroku --sistema-carros-usuarios --api-key=$HEROKU_API_KEY
+  on:
+    branch: develop
+    branch: main
