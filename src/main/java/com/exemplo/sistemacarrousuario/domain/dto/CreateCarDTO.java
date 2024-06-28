@@ -1,7 +1,6 @@
 package com.exemplo.sistemacarrousuario.domain.dto;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -35,29 +34,31 @@ public class CreateCarDTO {
      * O ano de fabricação do carro.
      */
 	@NotNull
-	@Schema(description = "Ano de fabricação", example = "2018")
+	@Schema(description = "Ano de fabricação", example = "2018", minimum = "1900", maximum = "2100")
 	private Integer year;
 	
     /**
      * A placa do carro.
      */
 	@NotEmpty
-	@Length(min=7, max=8)
-	@Schema(description = "Placa do carro", example = "PDV-0625")
+	@Length(min = 7, max = 8)
+	@Schema(description = "Placa do carro", example = "PDV-0625", minLength = 7, maxLength = 8)
 	private String licensePlate;
 	
     /**
      * O modelo do carro.
      */
 	@NotEmpty
-	@Schema(description = "Modelo do carro", example = "Audi")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Modelo do carro", example = "Audi", minLength = 1, maxLength = 255)
 	private String model;
 	
     /**
      * A cor do carro.
      */
 	@NotEmpty
-	@Schema(description = "Cor do carro", example = "White")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Cor do carro", example = "Branco", minLength = 1, maxLength = 255)
 	private String color;
 
 }

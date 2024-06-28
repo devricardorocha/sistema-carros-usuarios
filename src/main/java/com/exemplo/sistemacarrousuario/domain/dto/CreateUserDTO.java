@@ -32,16 +32,19 @@ public class CreateUserDTO {
 	private Long id;
 
 	@NotEmpty
-	@Schema(description = "Nome do usuário", example = "Alice")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Nome do usuário", example = "Alice", minLength = 1, maxLength = 255)
 	private String firstName;
 
 	@NotEmpty
-	@Schema(description = "Sobrenome do usuário", example = "Silva")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Sobrenome do usuário", example = "Silva", minLength = 1, maxLength = 255)
 	private String lastName;
 
 	@Email
 	@NotEmpty
-	@Schema(description = "Email do usuário", example = "alice.silva@example.com")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Email do usuário", example = "alice.silva@example.com", minLength = 1, maxLength = 255)
 	private String email;
 
 	@NotNull
@@ -51,17 +54,18 @@ public class CreateUserDTO {
 	private LocalDate birthday;
 
 	@NotEmpty
-	@Schema(description = "Login do usuário", example = "alice_silva")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Login do usuário", example = "alice_silva", minLength = 1, maxLength = 255)
 	private String login;
 
 	@NotEmpty
 	@Length(min = 6, max = 10)
-	@Schema(description = "Senha do usuário", example = "123456")
+	@Schema(description = "Senha do usuário", example = "123456", minLength = 6, maxLength = 10)
 	private String password;
 
 	@NotEmpty
 	@Length(min = 10, max = 11)
-	@Schema(description = "Número de telefone do usuário", example = "12345678987")
+	@Schema(description = "Número de telefone do usuário", example = "12345678987", minLength = 10, maxLength = 11)
 	private String phone;
 
 	@Schema(description = "Data de registro do usuário", example = "1992-09-30")

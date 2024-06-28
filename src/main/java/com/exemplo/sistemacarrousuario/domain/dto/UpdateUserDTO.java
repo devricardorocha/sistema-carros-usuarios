@@ -34,7 +34,7 @@ public class UpdateUserDTO {
 	/**
 	 * ID do usuário.
 	 */
-	@NotNull(message = "Missing fields")
+	@NotNull
 	@Schema(description = "ID do usuário")
 	private Long id;
 
@@ -42,14 +42,16 @@ public class UpdateUserDTO {
 	 * Nome do usuário.
 	 */
 	@NotEmpty
-	@Schema(description = "Nome do usuário", example = "Alice")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Nome do usuário", example = "Alice", minLength = 1, maxLength = 255)
 	private String firstName;
 
 	/**
 	 * Sobrenome do usuário.
 	 */
 	@NotEmpty
-	@Schema(description = "Sobrenome do usuário", example = "Silva")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Sobrenome do usuário", example = "Silva", minLength = 1, maxLength = 255)
 	private String lastName;
 
 	/**
@@ -57,7 +59,8 @@ public class UpdateUserDTO {
 	 */
 	@Email
 	@NotEmpty
-	@Schema(description = "Email do usuário", example = "alice.silva@example.com")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Email do usuário", example = "alice.silva@example.com", minLength = 1, maxLength = 255)
 	private String email;
 	
 	/**
@@ -73,13 +76,15 @@ public class UpdateUserDTO {
 	 * Login do usuário.
 	 */
 	@NotEmpty
-	@Schema(description = "Login do usuário", example = "alice_silva")
+	@Length(min = 1, max = 255)
+	@Schema(description = "Login do usuário", example = "alice_silva", minLength = 1, maxLength = 255)
 	private String login;
 
 	/**
 	 * Senha do usuário.
 	 */
-	@Schema(description = "Senha do usuário", example = "123456")
+	@Length(max = 255)
+	@Schema(description = "Senha do usuário", example = "123456", minLength = 1, maxLength = 255)
 	private String password;
 
 	/**
@@ -87,7 +92,7 @@ public class UpdateUserDTO {
 	 */
 	@NotEmpty
 	@Length(min = 10, max = 11)
-	@Schema(description = "Número de telefone do usuário", example = "12345678987")
+	@Schema(description = "Número de telefone do usuário", example = "12345678987", minLength = 10, maxLength = 11)
 	private String phone;
 
 	/**

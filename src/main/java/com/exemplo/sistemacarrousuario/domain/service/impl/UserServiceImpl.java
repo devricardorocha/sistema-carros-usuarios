@@ -70,12 +70,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UpdateUserDTO updateUser(Long id, UpdateUserDTO user) {
-		
-		if (userRepository.existsByEmail(user.getEmail()))
-			throw new CustomBadRequestException("Email already exists");
-
-		if (userRepository.existsByLogin(user.getLogin()))
-			throw new CustomBadRequestException("Login already exists");
 
 		if (!id.equals(user.getId()))
 			throw new CustomBadRequestException("Invalid fields");
@@ -83,6 +77,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		Optional<User> userOptional = userRepository.findById(user.getId());
 		if (userOptional.isEmpty())
 			throw new ResourceNotFoundException("User not found");
+
+		if (userRepository.existsByEmail(user.getEmail()))
+			throw new CustomBadRequestException("Email already exists");
+
+		if (userRepository.existsByLogin(user.getLogin()))
+			throw new CustomBadRequestException("Login already exists");
+
 		
 		User updatedUser = userOptional.get();
 		

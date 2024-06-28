@@ -29,6 +29,7 @@ import com.exemplo.sistemacarrousuario.domain.service.CarService;
 import com.exemplo.sistemacarrousuario.domain.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -79,7 +80,7 @@ public class CarRestController {
 			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<CreateCarDTO> addCarToUser(@Valid @RequestBody CreateCarDTO body,
-			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		createCarValidator.validate(body);
 		
 		Long userId = userService.getUserIDByLogin(
@@ -106,7 +107,8 @@ public class CarRestController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retorna a lista de carros"),
 			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<List<GetCarDTO>> getAllCarsByUser(@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+	public ResponseEntity<List<GetCarDTO>> getAllCarsByUser(
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		
 		Long userId = userService.getUserIDByLogin(
 				jwtTokenUtils.getLoginFromAuthorization(authorization));
@@ -134,7 +136,8 @@ public class CarRestController {
 			@ApiResponse(responseCode = "401", description = "Não autorizado"),
 			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
-	public ResponseEntity<GetCarDTO> getCarByIdAndUser(@PathVariable Long id, @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+	public ResponseEntity<GetCarDTO> getCarByIdAndUser(@PathVariable Long id,
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		
 		Long userId = userService.getUserIDByLogin(
 				jwtTokenUtils.getLoginFromAuthorization(authorization));
@@ -167,7 +170,7 @@ public class CarRestController {
 			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<Void> deleteUser(@PathVariable Long id,
-			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 
 		Long userId = userService.getUserIDByLogin(
 				jwtTokenUtils.getLoginFromAuthorization(authorization));
@@ -199,7 +202,7 @@ public class CarRestController {
 			@ApiResponse(responseCode = "404", description = "Carro não encontrado"),
 			@ApiResponse(responseCode = "500", description = "Erro inesperado na aplicação") })
 	public ResponseEntity<UpdateCarDTO> createUser(@PathVariable Long id, @Valid @RequestBody UpdateCarDTO body,
-			@RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
+			@Parameter(required = false, hidden = true) @RequestHeader(value = Constants.AUTHORIZATION_HEADER_NAME) String authorization) {
 		
 		updateCarValidator.validate(body);
 		Long userId = userService.getUserIDByLogin(jwtTokenUtils.getLoginFromAuthorization(authorization));
