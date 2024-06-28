@@ -20,7 +20,15 @@ Sistema para gerenciar o registro de usuários e carros.
 
 #### API
 
-  A API e a documentação do Swagger está disponível no Heroku através do [link](https://sistema-carros-usuarios-36f7a5a2f523.herokuapp.com/api/swagger-ui/index.html).
+  A API e sua documentação estão disponíveis no Heroku:
+  
+  * [Link](https://sistema-carros-usuarios-36f7a5a2f523.herokuapp.com/swagger-ui/index.html) para a documentação do Swagger.
+  * [Link](https://sistema-carros-usuarios-36f7a5a2f523.herokuapp.com) para a documentação do Javadocs das principais classes e interfaces.
+
+---
+#### UI
+
+  Disponibilizamos uma User Interface integrada com a API onde é possível ver o funcionamento da API em tempo real. Clique no [link](https://github.com/devricardorocha/sistema-carros-usuarios-ui) para o repositório e siga as instruções.
 
 ---
 ### Estórias do usuário e Solução
@@ -51,12 +59,28 @@ Siga as instruções para configurar o ambiente de desenvolvimento.
 
 #### Executar os testes:
 
+  Na IDE de sua preferência ou nas variáveis de sistema do seu servidor, crie as seguintes variáves:
+
+  ```
+TEST_DATABASE_URL= [URL para a base de dados de teste]
+  ```
+
   Na raiz do projeto, execute o comando:
   ```
   ./mvn test
   ```
 
 #### Executar a aplicação no ambiente local:
+
+  Na IDE de sua preferência ou nas variáveis de sistema do seu servidor, crie as seguintes variáves:
+
+  ```
+  DATABASE_USER= [Usuário do banco de dados]
+  DATABASE_PASSWORD= [Senha do usuário do banco de dados]
+  DATABASE_URL= [URL do banco de dados H2 Database]
+  API_JWT_SECRET= [Um hash SHA-256 de uma string codificada em Base64]
+  API_JWT_EXPIRATION= [Templo em milissegundos para a expiração do JWT Token]
+  ```
 
   Na raiz do projeto, execute o comando:
   ```
