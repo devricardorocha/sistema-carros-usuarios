@@ -3,6 +3,7 @@ package com.exemplo.sistemacarrousuario.domain.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,7 +42,7 @@ public class CreateCarDTO {
      * A placa do carro.
      */
 	@NotEmpty
-	@Pattern(regexp = "[A-Z]{3}[0-9][0-9A-Z][0-9]{2}")
+	@Length(min=7, max=8)
 	@Schema(description = "Placa do carro", example = "PDV-0625")
 	private String licensePlate;
 	

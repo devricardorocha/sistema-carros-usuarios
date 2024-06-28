@@ -60,7 +60,7 @@ public class CreateUserDTO {
 	private String password;
 
 	@NotEmpty
-	@Length(min = 11, max = 11)
+	@Length(min = 10, max = 11)
 	@Schema(description = "Número de telefone do usuário", example = "12345678987")
 	private String phone;
 
